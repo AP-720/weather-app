@@ -1,15 +1,13 @@
 import "./css/reset.css";
 import "./css/styles.css";
 
-import { getWeather } from "./api";
+import { fetchTodaysWeather } from "./api";
 
-async function fetchWeather() {
+(async () => {
 	try {
-		const data = await getWeather("Wales");
-		console.log("Weather Data:", data);
+		const weatherResponse = await fetchTodaysWeather();
+		console.log("Todays Weather:", weatherResponse);
 	} catch (error) {
-		console.error("Error:", error);
+		console.error("Failed to fetch weaterh:", error);
 	}
-}
-
-fetchWeather();
+})();
