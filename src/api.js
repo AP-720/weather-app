@@ -22,7 +22,7 @@ async function getWeatherData(query) {
 	}
 }
 
-function extractTodaysWeather(responseData) {
+function getTodaysWeather(responseData) {
 	const todaysDate = new Date().toISOString().split("T")[0];
 	const todaysWeather = responseData.days.find(
 		(day) => day.datetime === todaysDate
@@ -30,10 +30,10 @@ function extractTodaysWeather(responseData) {
 	return todaysWeather;
 }
 
-async function fetchTodaysWeather(location = "London") {
+async function getTodaysWeatherData(location) {
 	try {
 		const data = await getWeatherData(location);
-		const todaysWeather = extractTodaysWeather(data);
+		const todaysWeather = getTodaysWeather(data);
 		return todaysWeather;
 	} catch (error) {
 		console.error("Error Fetching Todays Weather:", error);
@@ -41,4 +41,4 @@ async function fetchTodaysWeather(location = "London") {
 	}
 }
 
-export { getWeatherData, extractTodaysWeather, fetchTodaysWeather };
+export { getWeatherData, getTodaysWeather, getTodaysWeatherData };
