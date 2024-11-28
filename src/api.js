@@ -22,6 +22,7 @@ async function getWeatherData(query) {
 	}
 }
 
+// Filters and returns the weather for todays date
 function getTodaysWeather(responseData) {
 	const todaysDate = new Date().toISOString().split("T")[0];
 	const todaysWeather = responseData.days.find(

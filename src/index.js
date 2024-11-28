@@ -7,6 +7,11 @@ const locationInput = document.getElementById("location-input");
 const searchButton = document.querySelector("[data-search-button]");
 
 searchButton.addEventListener("click", handleWeatherSearch);
+locationInput.addEventListener("keypress", (event) => {
+	if (event.key === "Enter") {
+		searchButton.click();
+	}
+});
 
 function getValidatedLocation() {
 	if (locationInput.validity.valueMissing) {

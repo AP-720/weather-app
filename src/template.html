@@ -4,20 +4,54 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Weather App</title>
-		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+		<link
+			href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
-
 		<div class="container">
-
-			<h1>Todays Weather</h1>
+			<h1>Get Weather</h1>
 
 			<div class="container-search">
-				<input type="text" name="location" id="location-input" placeholder="Enter location" required>
-				<button type="button" class="button-search" data-search-button>Search</button>
+				<input
+					type="text"
+					name="location"
+					id="location-input"
+					placeholder="Enter location"
+					required
+				/>
+				<button type="button" class="button-search" data-search-button>
+					Search
+				</button>
 			</div>
 
-		</div>
+			<div class="container-weather">
+				<div class="container-weather-data">
+					<h2 class="weather-title">The weather today in London</h2>
+					<div class="container-content">
+						<img
+							src="https://raw.githubusercontent.com/visualcrossing/WeatherIcons/58c79610addf3d4d91471abbb95b05e96fb43019/SVG/2nd%20Set%20-%20Monochrome/clear-day.svg"
+							alt="Weather Icon"
+							class="weather-icon"
+						/>
+						<div class="weather-text">
+							<h3 class="weather-description">
+								Partly cloudy throughout the day.
+							</h3>
 
+							<div class="weather-data">
+								<p>Temperature: 3°C</p>
+								<p>Wind Speed: 5.5mph</p>
+								<p>Max Temp: 7°C</p>
+								<p>Rain Prob: 0%</p>
+								<p>Min Temp: 0.1°C</p>
+								<p>humidity: 88.7%</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>

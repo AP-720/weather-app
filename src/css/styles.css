@@ -10,7 +10,7 @@ body {
 }
 
 h1 {
-	font-size: 3rem;
+	font-size: 4rem;
 	padding-bottom: 5%;
 }
 
@@ -26,6 +26,10 @@ button {
 	border-radius: 5px;
 }
 
+p {
+	/* text-align: center; */
+}
+
 .container {
 	padding-top: 5%;
 	display: flex;
@@ -33,12 +37,15 @@ button {
 	align-items: center;
 }
 
+/* Search Container */
+
 .container-search {
 	width: 90%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
+	padding-bottom: 10%;
 }
 
 .button-search {
@@ -49,4 +56,65 @@ button {
 
 .button-search:hover {
 	border: 2px solid #f7a072;
+}
+
+/* Weather Container */
+
+.container-weather {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: baseline;
+}
+
+.container-weather-data {
+	background-color: #f5f8fa;
+	padding: 6%;
+	border-radius: 10px;
+	border: 2px solid #0fa3b1;
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.container-content {
+	display: flex;
+	justify-content: space-between;
+	gap: 2%;
+	/* align-items: center; */
+}
+
+.weather-title {
+	font-size: 3rem;
+	padding-bottom: 6%;
+	text-wrap: nowrap;
+	text-decoration: underline;
+	color: #272e7a;
+}
+
+.weather-icon {
+	width: 35%;
+	border: 2px solid #f7a072;
+	padding: 2%;
+	border-radius: 10px;
+	background-color: #ffffff;
+}
+
+/* Contains the text data */
+.weather-text {
+	background-color: #ffffff;
+	border: 2px solid #f7a072;
+	padding: 2%;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.weather-description {
+	font-size: 1.4rem;
+	/* text-align: center; */
+	padding-bottom: 2%;
+}
+
+.weather-data {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	font-size: 1.2rem;
 }
