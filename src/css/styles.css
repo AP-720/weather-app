@@ -40,12 +40,12 @@ p {
 /* Search Container */
 
 .container-search {
-	width: 90%;
+	width: 400px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	padding-bottom: 10%;
+	padding-bottom: 5%;
 }
 
 .button-search {
@@ -69,6 +69,7 @@ p {
 
 .container-weather-data {
 	background-color: #f5f8fa;
+	width: 800px;
 	padding: 6%;
 	border-radius: 10px;
 	border: 2px solid #0fa3b1;
@@ -88,6 +89,7 @@ p {
 	text-wrap: nowrap;
 	text-decoration: underline;
 	color: #272e7a;
+	text-align: center;
 }
 
 .weather-icon {
@@ -95,12 +97,12 @@ p {
 	border: 2px solid #f7a072;
 	padding: 2%;
 	border-radius: 10px;
-	background-color: #ffffff;
+	background-color: #fbfbff;
 }
 
 /* Contains the text data */
 .weather-text {
-	background-color: #ffffff;
+	background-color: #fbfbff;
 	border: 2px solid #f7a072;
 	padding: 2%;
 	border-radius: 10px;
@@ -109,12 +111,15 @@ p {
 
 .weather-description {
 	font-size: 1.4rem;
-	/* text-align: center; */
 	padding-bottom: 2%;
 }
 
 .weather-data {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	font-size: 1.2rem;
+	font-size: 1.25rem;
+}
+
+.weather-data p {
+	padding: 4% 0;
 }

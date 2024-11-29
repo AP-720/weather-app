@@ -5,6 +5,8 @@ import { getTodaysWeatherData } from "./api";
 
 const locationInput = document.getElementById("location-input");
 const searchButton = document.querySelector("[data-search-button]");
+const weatherContainer = document.querySelector("[data-container-weather]");
+const weatherTemplate = document.querySelector("[data-weather-template]");
 
 searchButton.addEventListener("click", handleWeatherSearch);
 locationInput.addEventListener("keypress", (event) => {
@@ -37,7 +39,48 @@ async function handleWeatherSearch() {
 	try {
 		const weatherData = await getTodaysWeatherData(locationQuery);
 		console.log(`Todays Weather in ${locationQuery}:`, weatherData);
+		renderWeather(locationQuery, weatherData);
 	} catch (error) {
 		console.error("Failed to fetch weather:", error);
 	}
 }
+
+// Fix: so conditions is the tile and descriptions is the sub heading. Make Icon work.
+function renderWeather(location, weatherData) {
+	clearElement(weatherContainer);
+	const weatherCard = weatherTemplate.content.cloneNode(true);
+
+	weatherCard.querySelector(
+		"[data-weather-title]"
+	).textContent = `The weather today in ${location}`;
+	// icon
+	weatherCard.querySelector(
+		"[data-weather-description]"
+	).textContent = `${weatherData.description}`;
+	weatherCard.querySelector(
+		"[data-temp]"
+	).textContent = `Temperature: ${weatherData.temp}°C`;
+	weatherCard.querySelector(
+		"[data-wind-speed]"
+	).textContent = `Wind Speed: ${weatherData.windspeed}mph`;
+	weatherCard.querySelector(
+		"[data-max-temp]"
+	).textContent = `Max Temp: ${weatherData.tempmax}°C`;
+	weatherCard.querySelector(
+		"[data-rain-prob]"
+	).textContent = `Rain Prob: ${weatherData.precipprob}%`;
+	weatherCard.querySelector(
+		"[data-min-temp]"
+	).textContent = `Min Temp: ${weatherData.tempmin}°C`;
+	weatherCard.querySelector(
+		"[data-humidity]"
+	).textContent = `Humidity:  ${weatherData.humidity}%`;
+
+	weatherContainer.appendChild(weatherCard);
+}
+
+function clearElement(element) {
+	element.replaceChildren();
+}
+
+function getWeatherIcon() {}

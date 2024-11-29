@@ -26,32 +26,34 @@
 				</button>
 			</div>
 
-			<div class="container-weather">
+			<div class="container-weather" data-container-weather></div>
+
+			<template data-weather-template>
 				<div class="container-weather-data">
-					<h2 class="weather-title">The weather today in London</h2>
+					<h2 class="weather-title" data-weather-title>
+						The weather today in London
+					</h2>
 					<div class="container-content">
 						<img
 							src="https://raw.githubusercontent.com/visualcrossing/WeatherIcons/58c79610addf3d4d91471abbb95b05e96fb43019/SVG/2nd%20Set%20-%20Monochrome/clear-day.svg"
 							alt="Weather Icon"
 							class="weather-icon"
+							data-weather-icon
 						/>
 						<div class="weather-text">
-							<h3 class="weather-description">
-								Partly cloudy throughout the day.
-							</h3>
-
+							<h3 class="weather-description" data-weather-description></h3>
 							<div class="weather-data">
-								<p>Temperature: 3°C</p>
-								<p>Wind Speed: 5.5mph</p>
-								<p>Max Temp: 7°C</p>
-								<p>Rain Prob: 0%</p>
-								<p>Min Temp: 0.1°C</p>
-								<p>humidity: 88.7%</p>
+								<p data-temp></p>
+								<p data-wind-speed></p>
+								<p data-max-temp></p>
+								<p data-rain-prob></p>
+								<p data-min-temp></p>
+								<p data-humidity></p>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</template>
 		</div>
 	</body>
 </html>

@@ -9,8 +9,13 @@ async function getWeatherData(query) {
 			{ mode: "cors" }
 		);
 
+		// Checks the error type, if its invalid location get message for that.
 		if (!response.ok) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
+			const errorMessage =
+				response.status === 400
+					? "Invalid location. Please check the location name and try again."
+					: `Unexpected error: ${response.statusText}`;
+			throw new Error(errorMessage);
 		}
 
 		const responseData = await response.json();
