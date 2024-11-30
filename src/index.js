@@ -7,6 +7,8 @@ const locationInput = document.getElementById("location-input");
 const searchButton = document.querySelector("[data-search-button]");
 const weatherContainer = document.querySelector("[data-container-weather]");
 const weatherTemplate = document.querySelector("[data-weather-template]");
+const weatherContent = weatherContainer.querySelector("[data-weather-content]");
+const errorContainer = document.querySelector("[data-error-container]");
 
 searchButton.addEventListener("click", handleWeatherSearch);
 locationInput.addEventListener("keypress", (event) => {
@@ -33,8 +35,11 @@ async function handleWeatherSearch() {
 
 	if (!locationQuery) {
 		console.error("No location entered, aborting search.");
+		showError("Please enter a location.");
 		return;
 	}
+
+	clearError();
 
 	try {
 		const weatherData = await getTodaysWeatherData(locationQuery);
@@ -42,11 +47,12 @@ async function handleWeatherSearch() {
 		renderWeather(locationQuery, weatherData);
 	} catch (error) {
 		console.error("Failed to fetch weather:", error);
+		showError(error.message);
 	}
 }
 
 function renderWeather(location, weatherData) {
-	clearElement(weatherContainer);
+	clearElement(weatherContent);
 	const weatherCard = weatherTemplate.content.cloneNode(true);
 
 	weatherCard.querySelector(
@@ -77,7 +83,7 @@ function renderWeather(location, weatherData) {
 		"[data-humidity]"
 	).textContent = `Humidity:  ${weatherData.humidity}%`;
 
-	weatherContainer.appendChild(weatherCard);
+	weatherContent.appendChild(weatherCard);
 }
 
 function clearElement(element) {
@@ -90,4 +96,16 @@ function getWeatherIcon(icon) {
 		return "https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/2nd%20Set%20-%20Monochrome/unknown.svg";
 	}
 	return `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/2nd%20Set%20-%20Monochrome/${icon}.svg`;
+}
+
+// Display error message in UI
+function showError(message) {
+	clearElement(weatherContent);
+	errorContainer.textContent = message;
+	errorContainer.style.display = "block";
+}
+
+function clearError() {
+	errorContainer.textContent = "";
+	errorContainer.style.display = "none";
 }

@@ -122,3 +122,17 @@ p {
 .weather-data p {
 	padding: 4% 0;
 }
+
+/* Error Message */
+
+.container-error {
+	background-color: #f77272;
+	width: fit-content;
+	padding: 6%;
+	border-radius: 10px;
+	border: 2px solid #f7a072;
+	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	font-size: 2rem;
+	color: #f5f8fa;
+	display: none;
+}
