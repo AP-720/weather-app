@@ -45,7 +45,6 @@ async function handleWeatherSearch() {
 	}
 }
 
-// Fix: so conditions is the tile and descriptions is the sub heading. Make Icon work.
 function renderWeather(location, weatherData) {
 	clearElement(weatherContainer);
 	const weatherCard = weatherTemplate.content.cloneNode(true);
@@ -53,7 +52,9 @@ function renderWeather(location, weatherData) {
 	weatherCard.querySelector(
 		"[data-weather-title]"
 	).textContent = `The weather today in ${location}`;
-	// icon
+	weatherCard.querySelector("[data-weather-icon]").src = getWeatherIcon(
+		weatherData.icon
+	);
 	weatherCard.querySelector(
 		"[data-weather-description]"
 	).textContent = `${weatherData.description}`;
@@ -83,4 +84,10 @@ function clearElement(element) {
 	element.replaceChildren();
 }
 
-function getWeatherIcon() {}
+function getWeatherIcon(icon) {
+	if (!icon) {
+		console.warn("No icon provided, using default icon.");
+		return "https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/2nd%20Set%20-%20Monochrome/unknown.svg";
+	}
+	return `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/2nd%20Set%20-%20Monochrome/${icon}.svg`;
+}
