@@ -136,3 +136,14 @@ p {
 	color: #f5f8fa;
 	display: none;
 }
+
+/* Unit select */
+.unit-toggle-container {
+	position: fixed; /* Fix it to the viewport */
+	top: 0; /* Align to the top */
+	right: 0; /* Align to the right */
+	background-color: #eddea4; /* Optional: Make it stand out */
+	padding: 8px;
+	z-index: 1000; /* Ensure it appears on top of other elements */
+	border-bottom-left-radius: 10px;
+}
