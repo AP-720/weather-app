@@ -2,6 +2,15 @@ import "./css/reset.css";
 import "./css/styles.css";
 
 import { getTodaysWeatherData } from "./api";
+import {
+	getValidatedLocation,
+	showError,
+	clearError,
+	getTemperature,
+	handleUserError,
+	handleDeveloperError,
+	clearElement,
+} from "./utility";
 
 const locationInput = document.getElementById("location-input");
 const searchButton = document.querySelector("[data-search-button]");
@@ -25,31 +34,22 @@ locationInput.addEventListener("keypress", (event) => {
 
 unitToggle.addEventListener("change", (event) => handleUnitToggle(event));
 
-function getValidatedLocation() {
-	if (locationInput.validity.valueMissing) {
-		locationInput.setCustomValidity("Enter location");
-		locationInput.reportValidity();
-		return;
-	} else {
-		locationInput.setCustomValidity("");
-		const location = locationInput.value.trim();
-		return location;
-	}
-}
-
 async function handleWeatherSearch() {
-	const locationQuery = getValidatedLocation();
+	const locationQuery = getValidatedLocation(locationInput);
 
 	if (!locationQuery) {
-		console.error("No location entered, aborting search.");
-		showError("Please enter a location.");
+		showError("Please enter a location.", errorContainer, weatherContent);
 		return;
 	}
 
-	clearError();
+	clearError(errorContainer);
 
 	try {
-		const weatherData = await getTodaysWeatherData(locationQuery);
+		const weatherData = await getTodaysWeatherData(
+			locationQuery,
+			errorContainer,
+			weatherContent
+		);
 		console.log(`Today's Weather in ${locationQuery}:`, weatherData);
 
 		// Check if weatherData is valid before storing
@@ -62,60 +62,65 @@ async function handleWeatherSearch() {
 			throw new Error("Invalid weather data received.");
 		}
 	} catch (error) {
-		console.error("Failed to fetch weather:", error);
-		showError(error.message);
+		if (error.message.includes("Invalid location")) {
+			handleUserError(
+				"Invalid location. Please check the location name and try again.",
+				errorContainer,
+				weatherContent
+			);
+		} else {
+			handleDeveloperError(error, errorContainer);
+		}
 	}
 }
 
 function renderWeather(location, weatherData) {
 	// Validate weatherData
-	if (!weatherData || typeof weatherData.temp === "undefined") {
-		console.error("Invalid weather data passed to renderWeather:", weatherData);
-		showError("Failed to render weather data. Please try again.");
-		return;
+	try {
+		if (!weatherData || typeof weatherData.temp === "undefined") {
+			throw new Error("Invalid weather data provided for rendering.");
+		}
+
+		clearElement(weatherContent);
+		const weatherCard = weatherTemplate.content.cloneNode(true);
+
+		const temperature = getTemperature(weatherData.temp, currentUnit);
+		const tempMax = getTemperature(weatherData.tempmax, currentUnit);
+		const tempMin = getTemperature(weatherData.tempmin, currentUnit);
+
+		weatherCard.querySelector(
+			"[data-weather-title]"
+		).textContent = `The weather today in ${location}`;
+		weatherCard.querySelector("[data-weather-icon]").src = getWeatherIcon(
+			weatherData.icon
+		);
+		weatherCard.querySelector(
+			"[data-weather-description]"
+		).textContent = `${weatherData.description}`;
+		weatherCard.querySelector(
+			"[data-temp]"
+		).textContent = `Temperature: ${temperature.toFixed(1)}°${currentUnit}`;
+		weatherCard.querySelector(
+			"[data-wind-speed]"
+		).textContent = `Wind Speed: ${weatherData.windspeed}mph`;
+		weatherCard.querySelector(
+			"[data-max-temp]"
+		).textContent = `Max Temp: ${tempMax.toFixed(1)}°${currentUnit}`;
+		weatherCard.querySelector(
+			"[data-rain-prob]"
+		).textContent = `Rain Prob: ${weatherData.precipprob}%`;
+		weatherCard.querySelector(
+			"[data-min-temp]"
+		).textContent = `Min Temp: ${tempMin}°${currentUnit}`;
+		weatherCard.querySelector(
+			"[data-humidity]"
+		).textContent = `Humidity:  ${weatherData.humidity}%`;
+
+		weatherContent.appendChild(weatherCard);
+		locationInput.value = "";
+	} catch (error) {
+		handleDeveloperError(error, errorContainer);
 	}
-
-	clearElement(weatherContent);
-	const weatherCard = weatherTemplate.content.cloneNode(true);
-
-	const temperature = getTemperature(weatherData.temp, currentUnit);
-	const tempMax = getTemperature(weatherData.tempmax, currentUnit);
-	const tempMin = getTemperature(weatherData.tempmin, currentUnit);
-
-	weatherCard.querySelector(
-		"[data-weather-title]"
-	).textContent = `The weather today in ${location}`;
-	weatherCard.querySelector("[data-weather-icon]").src = getWeatherIcon(
-		weatherData.icon
-	);
-	weatherCard.querySelector(
-		"[data-weather-description]"
-	).textContent = `${weatherData.description}`;
-	weatherCard.querySelector(
-		"[data-temp]"
-	).textContent = `Temperature: ${temperature.toFixed(1)}°${currentUnit}`;
-	weatherCard.querySelector(
-		"[data-wind-speed]"
-	).textContent = `Wind Speed: ${weatherData.windspeed}mph`;
-	weatherCard.querySelector(
-		"[data-max-temp]"
-	).textContent = `Max Temp: ${tempMax.toFixed(1)}°${currentUnit}`;
-	weatherCard.querySelector(
-		"[data-rain-prob]"
-	).textContent = `Rain Prob: ${weatherData.precipprob}%`;
-	weatherCard.querySelector(
-		"[data-min-temp]"
-	).textContent = `Min Temp: ${tempMin}°${currentUnit}`;
-	weatherCard.querySelector(
-		"[data-humidity]"
-	).textContent = `Humidity:  ${weatherData.humidity}%`;
-
-	weatherContent.appendChild(weatherCard);
-	locationInput.value = "";
-}
-
-function clearElement(element) {
-	element.replaceChildren();
 }
 
 function getWeatherIcon(icon) {
@@ -126,36 +131,16 @@ function getWeatherIcon(icon) {
 	return `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/SVG/2nd%20Set%20-%20Monochrome/${icon}.svg`;
 }
 
-// Display error message in UI
-function showError(message) {
-	clearElement(weatherContent);
-	errorContainer.textContent = message;
-	errorContainer.style.display = "block";
-}
-
-function clearError() {
-	errorContainer.textContent = "";
-	errorContainer.style.display = "none";
-}
-
-// Temp Conversion functions
-function convertTemperature(temp, toUnit) {
-	return toUnit === "F" ? (temp * 9) / 5 + 32 : ((temp - 32) * 5) / 9;
-}
-
-// temperature conversion logic in a helper function
-function getTemperature(value, unit) {
-	return unit === "C" ? value : convertTemperature(value, "F");
-}
-
 function handleUnitToggle(event) {
-	currentUnit = event.target.value;
+	try {
+		currentUnit = event.target.value;
 
-	// Re-render the weather card with the updated unit
-	if (currentLocation && currentWeatherData) {
-		renderWeather(currentLocation, currentWeatherData);
-	} else {
-		console.warn("No weather data available to re-render.");
-		showError("Please fetch the weather data first.");
+		if (currentLocation && currentWeatherData) {
+			renderWeather(currentLocation, currentWeatherData);
+		} else {
+			throw new Error("No weather data available to re-render.");
+		}
+	} catch (error) {
+		handleUserError(error, errorContainer, weatherContent);
 	}
 }

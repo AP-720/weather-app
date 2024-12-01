@@ -26,10 +26,6 @@ button {
 	border-radius: 5px;
 }
 
-p {
-	/* text-align: center; */
-}
-
 .container {
 	padding-top: 5%;
 	display: flex;
