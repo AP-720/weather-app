@@ -1,5 +1,7 @@
 // import { clearElement } from "./index";
 
+// Custom error message handling. Not really needed as errors are now
+// handled and rendered on screen.
 export function getValidatedLocation(inputElement) {
 	if (inputElement.validity.valueMissing) {
 		inputElement.setCustomValidity("Enter location");
@@ -25,6 +27,7 @@ export function clearError(errorContainer) {
 	errorContainer.style.display = "none";
 }
 
+// General function to remove element from DOM
 export function clearElement(element) {
 	if (element) {
 		element.replaceChildren();

@@ -29,7 +29,8 @@ async function getWeatherData(query, errorContainer, weatherContent) {
 	}
 }
 
-// Filters and returns the weather for todays date
+// Filters and returns the weather for todays date. This isn't nessary as
+// its possible to get just todats weather from the api
 function getTodaysWeather(responseData, errorContainer) {
 	const todaysDate = new Date().toISOString().split("T")[0];
 	const todaysWeather = responseData.days.find(

@@ -75,12 +75,7 @@ async function handleWeatherSearch() {
 }
 
 function renderWeather(location, weatherData) {
-	// Validate weatherData
 	try {
-		if (!weatherData || typeof weatherData.temp === "undefined") {
-			throw new Error("Invalid weather data provided for rendering.");
-		}
-
 		clearElement(weatherContent);
 		const weatherCard = weatherTemplate.content.cloneNode(true);
 
@@ -111,7 +106,7 @@ function renderWeather(location, weatherData) {
 		).textContent = `Rain Prob: ${weatherData.precipprob}%`;
 		weatherCard.querySelector(
 			"[data-min-temp]"
-		).textContent = `Min Temp: ${tempMin}°${currentUnit}`;
+		).textContent = `Min Temp: ${tempMin.toFixed(1)}°${currentUnit}`;
 		weatherCard.querySelector(
 			"[data-humidity]"
 		).textContent = `Humidity:  ${weatherData.humidity}%`;
@@ -141,6 +136,8 @@ function handleUnitToggle(event) {
 			throw new Error("No weather data available to re-render.");
 		}
 	} catch (error) {
-		handleUserError(error, errorContainer, weatherContent);
+		console.warn(error);
+		// Don't think an error needs to be shown when changing the units before a search has been done.
+		// handleUserError(error, errorContainer, weatherContent);
 	}
 }
